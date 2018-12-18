@@ -12,7 +12,7 @@ var users = {
 
 var databaseStructure = {
   users : {
-    username            : "Raquib",
+    username            : "Raquib Git",
     password            : "mv1z16",
     legal_terms         : false,
     send_usage          : false,
