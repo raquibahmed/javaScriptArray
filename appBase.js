@@ -34,28 +34,28 @@ var databaseStructure = {
     selected_pointer    : 0,
     selected_compass    : 0,
     selected_scheme     : 0,
-    table_theme         : {
-                              0 : {
-                                theme_id      : 0,
-                                theme_name    : "generic",
-                                theme_folder  : "/src/themeTemplate/",
-                                theme_premium : false,
-                              },
-                              1 : {
-                                theme_id      : 1,
-                                theme_name    : "pitchBlack",
-                                theme_folder  : "/src/themeTemplate/",
-                                theme_premium : false,
-                              },
-                              2 : {
-                                theme_id      : 2,
-                                theme_name    : "pitchWhite",
-                                theme_folder  : "/src/themeTemplate/",
-                                theme_premium : false,
-                              }
+      table_theme       :   {
+                                0 : {
+                                  theme_id      : 0,
+                                  theme_name    : "generic",
+                                  theme_folder  : "/src/themeTemplate/",
+                                  theme_premium : false,
+                                },
+                                1 : {
+                                  theme_id      : 1,
+                                  theme_name    : "pitchBlack",
+                                  theme_folder  : "/src/themeTemplate/",
+                                  theme_premium : false,
+                                },
+                                2 : {
+                                  theme_id      : 2,
+                                  theme_name    : "pitchWhite",
+                                  theme_folder  : "/src/themeTemplate/",
+                                  theme_premium : false,
+                                }
 
-                          },
-      table_pointer       : {
+                            },
+    table_pointer         : {
                                 0 : {
                                   pointer_id      : 0,
                                   pointer_name    : "generic",
@@ -76,7 +76,7 @@ var databaseStructure = {
                                 }
 
                             },
-          table_compass     : {
+    table_compass         : {
                                     0 : {
                                       compass_id      : 0,
                                       compass_name    : "generic",
@@ -95,11 +95,66 @@ var databaseStructure = {
                                       compass_folder  : "/src/compassTemplate/",
                                       compass_premium : false,
                                     }
+                              }
+    },
+    share: {
+                                      table_history :{
+                                                        0 : {
+                                                          history_id        : 0,
+                                                          share_contact_id  : 0,
+                                                          contact_name      : "",
+                                                          contact_email     : "",
+                                                          timestamp         : 0,
+                                                          share_lat         : 0,
+                                                          share_long        :0
+                                                        },
+                                                        1 : {
+                                                          history_id        : 1,
+                                                          share_contact_id  : 0,
+                                                          contact_name      : "",
+                                                          contact_email     : "",
+                                                          timestamp         : 0,
+                                                          share_lat         : 0,
+                                                          share_long        :0
+                                                        },
+                                                        2 : {
+                                                          history_id        : 1,
+                                                          share_contact_id  : 0,
+                                                          contact_name      : "",
+                                                          contact_email     : "",
+                                                          timestamp         : 0,
+                                                          share_lat         : 0,
+                                                          share_long        :0
+                                                        }
+                                                      },
+                                      table_contact : {
+                                                        0 : {
+                                                          contact_id        : 0,
+                                                          contact_name      : "",
+                                                          contact_email     : "",
+                                                          contact_lat       : 0,
+                                                          contact_long      : 0
+                                                        },
+                                                        1 : {
+                                                          contact_id        : 1,
+                                                          contact_name      : "",
+                                                          contact_email     : "",
+                                                          contact_lat       : 0,
+                                                          contact_long      : 0
+                                                        },
+                                                        2 : {
+                                                          contact_id        : 2,
+                                                          contact_name      : "",
+                                                          contact_email     : "",
+                                                          contact_lat       : 0,
+                                                          contact_long      : 0
+                                                        }
+                                                      }
+            }
 
-                                }
-  }
 };
 
 
 console.log(databaseStructure);
 console.log(databaseStructure.themes.table_theme[1]);
+console.log(databaseStructure.share.table_contact[1]);
