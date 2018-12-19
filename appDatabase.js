@@ -1,5 +1,6 @@
 var databaseStructure = {
   _id                   : "simpleDB",
+  enable_database       : true,
   users : {
     username            : "Raquib Git",
     password            : "mv1z16",
