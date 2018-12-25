@@ -1,6 +1,15 @@
 var dbName = "simpleDatabase";
 var db = new PouchDB(dbName, {auto_compaction: true});
-var projectDB = "simpleDB"
+var projectDB = "simpleDB";
+
+function enterArrayVariable(dBase, array, tier1, tier2){
+  dBase[tier1][tier2] = new Array();
+  jQuery(array).each(function(key,val){
+    dBase[tier1][tier2][key] = val;
+  });
+  return dBase;
+}
+
 
 function createDatabase(dataBase) {
   return db.put(dataBase).then(function (response) {
@@ -99,31 +108,7 @@ var updTierOne = new Promise(function(resolve,reject){
 });
 */
 
-var share = {
-    type      : "remove",
-    table     : "table_contact",
-    unique_id : "contact_id",
-    value     : {
-      contact_name  : "Raquib Ahmed",
-      contact_email : "raquib_ah@hotmail.com",
-      contact_lat   : "46.75",
-      contact_long  : "-58.56"
-    }
-};
 
-var tbl = {
-    type      : "remove",
-    table     : "table_history",
-    unique_id : "history_id",
-    value     : {
-      share_contact_id  : "5",
-      contact_name  : "RQ Ahmed",
-      contact_email : "raquib_ah@hotmail.com",
-      share_lat   : "10.00",
-      share_long  : "-20.00",
-      timestamp   : "123456789"
-    }
-};
 
 Object.size = function(obj) {
     var size = 0, key;
@@ -151,25 +136,28 @@ function updateShare(updateType, table, unique_id, value) {
 
         case "add":
 
-          return new Promise(function(resolve,reject){
-            resolve(readDatabase(projectDB));
-          }).then(function(doc){
-            var total = Object.size(doc["share"][table]);
-            value[unique_id] = total;
+              return new Promise(function(resolve,reject){
+                resolve(readDatabase(projectDB));
+              }).then(function(doc){
 
-            //Reject If Duplicate
-            var realArray = jQuery.makeArray(doc["share"][table])[0];
-            var arrayExists = false;
-            $.map( realArray, function(val,key) {
-                if(compareArray(val, value, unique_id) == true){
-                  arrayExists = true;
-                }
-            });
+              var total = doc["share"][table].length;
+              value[unique_id] = total;
 
-            if(arrayExists == false){
-              doc["share"][table][total] = value;
-              db.put(doc);
-            }
+              //Reject If Duplicate
+              var realArray = doc["share"][table];
+
+              var arrayExists = false;
+              $.map( realArray, function(val,key) {
+                  if(compareArray(val, value, unique_id) == true){
+                    arrayExists = true;
+                  }
+              });
+
+              if(arrayExists == false){
+                doc["share"][table][total] = value;
+                db.put(doc);
+              }
+
               return doc;
           });
           break;
@@ -177,34 +165,68 @@ function updateShare(updateType, table, unique_id, value) {
         case "remove":
 
           return new Promise(function(resolve,reject){
-            resolve(readDatabase(projectDB));
+             resolve(readDatabase(projectDB));
           }).then(function(doc){
 
             //Remove All Matching Instances
-            var realArray = jQuery.makeArray(doc["share"][table])[0];
-            var newArray = new Array();
+            var realArray = jQuery.makeArray(doc["share"][table]);
 
-            $.map( realArray, function(val,key) {
-                if(compareArray(val, value, unique_id) == false){
-                  newArray.push(val);
+            return new Promise(function(resolve, reject){
+              $.map( realArray, function(val,key) {
+                if(compareArray(val, value, unique_id) == true){
+                  realArray.splice(key,1);
                 }
+              });
+              resolve(realArray);
+            }).then(function(realArray){
+              var modArray = enterArrayVariable(doc, realArray, "share", table);
+              db.put(modArray);
+              return modArray;
             });
-            doc["share"][table] = newArray;
-            db.put(doc);
-            return doc;
+
+
+
           });
-          break;
+
         default:
           break;
 
       }
 }
 
+//TODO Remove Not Working
+var share = {
+    type      : "remove",
+    table     : "table_contact",
+    unique_id : "contact_id",
+    value     : {
+      contact_name  : "Raquib Ahmed",
+      contact_email : "raquib_ah@hotmail.com",
+      contact_lat   : 46.75,
+      contact_long  : -58.56
+    }
+};
+
+var tbl = {
+    type      : "remove",
+    table     : "table_history",
+    unique_id : "history_id",
+    value     : {
+      share_contact_id  : "5",
+      contact_name  : "RQ Ahmed",
+      contact_email : "raquib_ah@hotmail.com",
+      share_lat   : 10.00,
+      share_long  : -20.00,
+      timestamp   : "123456789"
+    }
+};
+
+
 console.log("Modify Share Table : " + new Date());
 var mod = new Promise(function(resolve,reject){
-  //resolve(updateShare(share.type, share.table, share.unique_id , share.value));
-  resolve(updateShare(tbl.type, tbl.table, tbl.unique_id , tbl.value));
+  resolve(updateShare(share.type, share.table, share.unique_id , share.value));
+  //resolve(updateShare(tbl.type, tbl.table, tbl.unique_id , tbl.value));
 }).then(function (doc) {
-    //console.log(doc["share"][share.table]);
-    console.log(doc["share"][tbl.table]);
+    console.log(doc["share"][share.table]);
+    //console.log(doc["share"][tbl.table]);
 });
